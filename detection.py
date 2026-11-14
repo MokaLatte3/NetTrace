@@ -33,6 +33,11 @@ def get_public_ip(version):
     # The caller expects None on failure, never an exception.
     except (requests.RequestException, ValueError):
         return None
+                # Last-resort safety net: the team contract says this function must never
+    # raise, so an error we didn't plan for should mean "IP not available",
+    # not a crashed CLI.
+    except Exception:
+        return None
 
     return _extract_ip(data, version)
 
