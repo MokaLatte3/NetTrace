@@ -1,5 +1,7 @@
 """Find this computer's public IP address using the ipify service."""
 
+import ipaddress
+
 import requests
 
 # ipify serves each IP family from its own hostname. api6 can only be reached
@@ -32,16 +34,27 @@ def get_public_ip(version):
     except (requests.RequestException, ValueError):
         return None
 
-    return _extract_ip(data)
+    return _extract_ip(data, version)
 
 
-def _extract_ip(data):
-    """Pull the "ip" string out of the JSON, or None if it isn't there."""
+def _extract_ip(data, version):
+    """Pull the "ip" string out of the JSON, or None if it isn't valid."""
     # Valid JSON can still be the wrong shape (a list, or "ip": null), and the
     # contract promises a string, so check before trusting it.
     if not isinstance(data, dict):
         return None
     ip = data.get("ip")
-    if not isinstance(ip, str) or not ip:
+    if not isinstance(ip, str):
         return None
-    return ip
+    return ip if _is_ip_of_version(ip, version) else None
+
+
+def _is_ip_of_version(ip, version):
+    """True if ip is a real address of the IP family we asked for."""
+    # metadata.py looks this address up, so garbage (an HTML error page, a
+    # typo'd number) or an IPv4 answer to an IPv6 request would give the user
+    # wrong info instead of a clear "not available".
+    try:
+        return ipaddress.ip_address(ip).version == version
+    except ValueError:
+        return False
