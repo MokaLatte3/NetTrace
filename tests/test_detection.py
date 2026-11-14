@@ -79,6 +79,20 @@ class GetPublicIpTests(unittest.TestCase):
                 mock_get.return_value = fake_response(json_data=data)
                 self.assertIsNone(detection.get_public_ip(4))
 
+    def test_not_an_ip_address_returns_none(self, mock_get):
+        for text in ("not-an-ip", "999.1.1.1", "203.0.113", "<html>"):
+            with self.subTest(text=text):
+                mock_get.return_value = fake_response(json_data={"ip": text})
+                self.assertIsNone(detection.get_public_ip(4))
+
+    def test_wrong_ip_family_returns_none(self, mock_get):
+        # An IPv6 address for an IPv4 request (and vice versa) is never valid.
+        mock_get.return_value = fake_response(json_data={"ip": "2001:db8::1"})
+        self.assertIsNone(detection.get_public_ip(4))
+
+        mock_get.return_value = fake_response(json_data={"ip": "203.0.113.5"})
+        self.assertIsNone(detection.get_public_ip(6))
+
     def test_invalid_version_returns_none(self, mock_get):
         for version in (5, 0, "4", None, [4]):
             with self.subTest(version=version):
