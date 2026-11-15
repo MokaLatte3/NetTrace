@@ -41,7 +41,7 @@ class TestFormatter(unittest.TestCase):
 
         output = self.get_console_output()
 
-        self.assertIn("Not Available", output)
+        self.assertIn("N/A", output)
         self.assertIn("2001:4680:7:80c::f2", output)
 
     def test_ipv6_none(self):
@@ -50,28 +50,28 @@ class TestFormatter(unittest.TestCase):
         output = self.get_console_output()
 
         self.assertIn("103.60.171.44", output)
-        self.assertIn("Not Available", output)
+        self.assertIn("N/A", output)
 
     def test_both_no_ip(self):
         show(None, None, {})
 
         output = self.get_console_output()
 
-        self.assertEqual(output.count("Not Available"), 2)
+        self.assertEqual(output.count("N/A"), 2)
 
     def test_empty_metadata(self):
         show("103.60.171.44", "2001:4680:7:80c::f2", {})
 
         output = self.get_console_output()
 
-        self.assertIn("Not Available", output)
+        self.assertIn("N/A", output)
 
     def test_metadata_none(self):
         show("103.60.171.44", "2001:4680:7:80c::f2", None)
 
         output = self.get_console_output()
 
-        self.assertIn("Not Available", output)
+        self.assertIn("N/A", output)
 
     def test_individual_missing_metadata_fields(self):
         metadata = {
@@ -85,7 +85,7 @@ class TestFormatter(unittest.TestCase):
 
         self.assertIn("Imus City", output)
         self.assertIn("Philippines", output)
-        self.assertIn("Not Available", output) 
+        self.assertIn("N/A", output) 
 
     def test_required_rows_are_displayed(self):
         show("103.60.171.44", "2001:4680:7:80c::f2", {})
