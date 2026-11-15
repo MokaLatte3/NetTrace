@@ -7,9 +7,9 @@ FAKE_META = {"city": "Manila", "region": "NCR", "country": "Philippines",
              "isp": "Test ISP", "asn": "AS0000"}
 
 
-@patch("nettrace.formatter.show", create=True)
-@patch("nettrace.ip_info.get_metadata", create=True, return_value=FAKE_META)
-@patch("nettrace.detection.get_public_ip", create=True)
+@patch("nettrace.formatter.show")
+@patch("nettrace.ip_info.get_metadata", return_value=FAKE_META)
+@patch("nettrace.detection.get_public_ip")
 class TestMain(unittest.TestCase):
 
     def test_both_ips_found(self, mock_ip, mock_meta, mock_show):
@@ -26,6 +26,8 @@ class TestMain(unittest.TestCase):
     def test_no_ips_returns_1(self, mock_ip, mock_meta, mock_show):
         mock_ip.return_value = None
         self.assertEqual(nettrace.main([]), 1)
+        mock_meta.assert_not_called()
+        mock_show.assert_called_once_with(None, None, None)
 
     def test_help_exits_cleanly(self, mock_ip, mock_meta, mock_show):
         with self.assertRaises(SystemExit) as ctx:
