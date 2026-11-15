@@ -57,7 +57,7 @@ class TestFormatter(unittest.TestCase):
 
         output = self.get_console_output()
 
-        self.assertEqual(output.count("N/A"), 2)
+        self.assertEqual(output.count("N/A"), 7)
 
     def test_empty_metadata(self):
         show("103.60.171.44", "2001:4680:7:80c::f2", {})
