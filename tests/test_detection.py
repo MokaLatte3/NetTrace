@@ -55,6 +55,12 @@ class GetPublicIpTests(unittest.TestCase):
         mock_get.side_effect = requests.exceptions.ConnectionError
 
         self.assertIsNone(detection.get_public_ip(6))
+   
+    def test_unexpected_error_returns_none(self, mock_get):
+        # Even an error we never planned for must not crash the CLI.
+        mock_get.side_effect = RuntimeError("something unexpected")
+
+        self.assertIsNone(detection.get_public_ip(4))
 
     def test_non_200_returns_none(self, mock_get):
         mock_get.return_value = fake_response(
