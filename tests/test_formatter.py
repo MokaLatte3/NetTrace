@@ -27,7 +27,7 @@ class TestFormatter(unittest.TestCase):
         result = show("103.60.171.44", "2001:4860:7:80c::f2", metadata)
         output = self.get_console_output()
 
-        self.assertInNone(result)
+        self.assertIsNone(result)
         self.assertIn("103.60.171.44", output)
         self.assertIn("2001:4860:7:80c::f2", output)
         self.assertIn("Imus City", output)
@@ -60,14 +60,14 @@ class TestFormatter(unittest.TestCase):
         self.assertEqual(output.count("Not Available"), 2)
 
     def test_empty_metadata(self):
-        show("103.60.171.44", "2001:4860:7:80c::f2", {})
+        show("103.60.171.44", "2001:4680:7:80c::f2", {})
 
         output = self.get_console_output()
 
         self.assertIn("Not Available", output)
 
     def test_metadata_none(self):
-        show("103.60.171.44", "2001:4860:7:80c::f2", None)
+        show("103.60.171.44", "2001:4680:7:80c::f2", None)
 
         output = self.get_console_output()
 
@@ -88,7 +88,7 @@ class TestFormatter(unittest.TestCase):
         self.assertIn("Not Available", output) 
 
     def test_required_rows_are_displayed(self):
-        show("103.60.171.44", "2001:4860:7:80c::f2", {})
+        show("103.60.171.44", "2001:4680:7:80c::f2", {})
 
         output = self.get_console_output()
 
