@@ -21,9 +21,12 @@ def main(argv=None):
     ipv4 = detection.get_public_ip(4)
     ipv6 = detection.get_public_ip(6)
 
-    # if no ipv4 or ipv6 found output N/A
+    # only lookup for metadata if we find an IP, otherwise skip the call and output N/A
     lookup_ip = ipv4 or ipv6
-    info = ip_info.get_metadata(lookup_ip)
+    if lookup_ip:
+        info = ip_info.get_metadata(lookup_ip)
+    else:
+        info = None
 
     formatter.show(ipv4, ipv6, info)
 
