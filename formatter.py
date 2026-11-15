@@ -16,10 +16,10 @@ def show(ipv4, ipv6, metadata):
     # Handling missing IP Addresses to clearly indicate
     # missing information in the output
     if ipv4 is None:
-        ipv4 = "[yellow]Not Available[/yellow]"
+        ipv4 = "[yellow]N/A[/yellow]"
 
     if ipv6 is None:
-        ipv6 = "[yellow]Not Available[/yellow]"
+        ipv6 = "[yellow]N/A[/yellow]"
 
     # Add detected IP Addresses to the table
     table.add_row("IPv4 Address", str(ipv4))
@@ -32,11 +32,11 @@ def show(ipv4, ipv6, metadata):
 
     # Retrieve individual metadata field with a default value
     # of Not Available to catch missing fields without interruption
-    table.add_row("City", str(metadata.get("city", "[yellow]Not Available[/yellow]")))
-    table.add_row("Region", str(metadata.get("region", "[yellow]Not Available[/yellow]")))
-    table.add_row("Country", str(metadata.get("country", "[yellow]Not Available[/yellow]")))
-    table.add_row("ISP", str(metadata.get("isp", "[yellow]Not Available[/yellow]")))
-    table.add_row("ASN", str(metadata.get("asn", "[yellow]Not Available[/yellow]")))
+    table.add_row("City", str(metadata.get("city", "[yellow]N/A[/yellow]")))
+    table.add_row("Region", str(metadata.get("region", "[yellow]N/A[/yellow]")))
+    table.add_row("Country", str(metadata.get("country", "[yellow]N/A[/yellow]")))
+    table.add_row("ISP", str(metadata.get("isp", "[yellow]N/A[/yellow]")))
+    table.add_row("ASN", str(metadata.get("asn", "[yellow]N/A[/yellow]")))
 
     # Display the completed table in the terminal
     console.print(table)
